@@ -1,0 +1,18 @@
+*** Starting wc test.
+--- wc test: PASS
+*** Starting indexer test.
+mr-indexer-all mr-correct-indexer.txt 不同：第 1108 字节（第 20 行）
+--- indexer output is not the same as mr-correct-indexer.txt
+--- indexer test: FAIL
+*** Starting map parallelism test.
+--- map parallelism test: PASS
+*** Starting reduce parallelism test.
+--- reduce parallelism test: PASS
+*** Starting job count test.
+--- map jobs ran incorrect number of times (16 != 8)
+--- job count test: FAIL
+*** Starting early exit test.
+--- early exit test: PASS
+*** Starting crash test.
+--- crash test: PASS
+*** FAILED SOME TESTS

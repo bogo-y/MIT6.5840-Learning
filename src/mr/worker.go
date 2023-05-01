@@ -120,7 +120,8 @@ func Worker(mapf func(string, string) []KeyValue,
 			for i := range todo.Files {
 				file, err1 := os.Open(todo.Files[i])
 				if err1 != nil {
-					log.Error("cant open " + todo.Files[0] + " " + err1.Error())
+					log.Error("cannot open " + todo.Files[0] + " " + err1.Error())
+					continue
 				}
 
 				decoder := json.NewDecoder(file)
@@ -156,6 +157,8 @@ func Worker(mapf func(string, string) []KeyValue,
 				ID:       todo.ID,
 				Files:    []string{opName},
 			}
+		case TaskTypeNone:
+			log.Info("received task type none")
 		default:
 			log.Error("bad task type")
 		}

@@ -31,7 +31,7 @@ func (c *Coordinator) GetTask(fn *TaskFinished, td *TaskToDo) error {
 	if fn.DoneType == TaskTypeMap && c.mapTasks[fn.ID].done == false {
 		for i, j := range fn.Files {
 			if len(j) > 0 {
-				c.reduceTasks[i].file = append(c.reduceTasks[i].file, fn.Files[0])
+				c.reduceTasks[i].file = append(c.reduceTasks[i].file, j)
 				//= append(c.reduceTasks[i].file, fn.Files[0])
 			}
 		}
@@ -40,8 +40,8 @@ func (c *Coordinator) GetTask(fn *TaskFinished, td *TaskToDo) error {
 	} else if fn.DoneType == TaskTypeReduce && c.reduceTasks[fn.ID].done == false {
 		c.reduceTasks[fn.ID].done = true
 		c.reduceRemain--
-	} else {
-		log.Warning("ignore bad task type")
+	} else if fn.DoneType != 0 {
+		//log.Warning("ignore: " + strconv.Itoa(fn.ID) + " " + strconv.Itoa(fn.DoneType))
 	}
 
 	//now := time.Now()
@@ -53,7 +53,7 @@ func (c *Coordinator) GetTask(fn *TaskFinished, td *TaskToDo) error {
 				td.ID = t.id
 				td.Files = t.file
 				td.NReduce = len(c.reduceTasks)
-				c.reduceTasks[i].startAt = time.Now()
+				c.mapTasks[i].startAt = time.Now()
 				return nil
 			}
 		}
@@ -68,6 +68,7 @@ func (c *Coordinator) GetTask(fn *TaskFinished, td *TaskToDo) error {
 			}
 		}
 		td.Type = TaskTypeSleep
+		td.ID = 5
 	} else {
 		td.Type = TaskTypeExit
 	}
